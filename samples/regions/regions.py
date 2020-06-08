@@ -157,7 +157,7 @@ class CustomDataset(utils.Dataset):
         """
         # If not a balloon dataset image, delegate to parent class.
         info = self.image_info[image_id]
-        if info["source"] != "objects":
+        if info["source"] != "regions":
             return super(self.__class__, self).load_mask(image_id)
         class_ids = info['class_ids']
     
@@ -178,7 +178,7 @@ class CustomDataset(utils.Dataset):
     def image_reference(self, image_id):
         """Return the path of the image."""
         info = self.image_info[image_id]
-        if info["source"] == "objects":
+        if info["source"] == "regions":
             return info["path"]
         else:
             super(self.__class__, self).image_reference(image_id)
@@ -296,8 +296,8 @@ if __name__ == '__main__':
                         metavar="<command>",
                         help="'train' or 'splash'")
     parser.add_argument('--dataset', required=False,
-                        metavar="/path/to/balloon/dataset/",
-                        help='Directory of the Balloon dataset')
+                        metavar="/path/to/regions/dataset/",
+                        help='Directory of the Regions dataset')
     parser.add_argument('--weights', required=True,
                         metavar="/path/to/weights.h5",
                         help="Path to weights .h5 file or 'coco'")
