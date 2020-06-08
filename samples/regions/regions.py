@@ -44,10 +44,6 @@ from mrcnn import model as modellib, utils
 
 # Path to trained weights file
 COCO_WEIGHTS_PATH = os.path.join(ROOT_DIR, "mask_rcnn_coco.h5")
-print('coco weights path: ', COCO_WEIGHTS_PATH)
-# Download COCO trained weights from Releases if needed
-if not os.path.exists(COCO_WEIGHTS_PATH):
-    utils.download_trained_weights(COCO_WEIGHTS_PATH)
 
 # Directory to save logs and model checkpoints, if not provided
 # through the command line argument --logs
@@ -58,7 +54,7 @@ DEFAULT_LOGS_DIR = os.path.join(ROOT_DIR, "logs")
 ############################################################
 
 
-class CustomConfig(Config):
+class RegionsConfig(Config):
     """Configuration for training on the toy  dataset.
     Derives from the base Config class and overrides some values.
     """
@@ -83,9 +79,9 @@ class CustomConfig(Config):
 #  Dataset
 ############################################################
 
-class CustomDataset(utils.Dataset):
+class RegionsDataset(utils.Dataset):
 
-    def load_custom(self, dataset_dir, subset):
+    def load_regions(self, dataset_dir, subset):
         """Load a subset of the Balloon dataset.
         dataset_dir: Root directory of the dataset.
         subset: Subset to load: train or val
@@ -178,7 +174,7 @@ class CustomDataset(utils.Dataset):
     def image_reference(self, image_id):
         """Return the path of the image."""
         info = self.image_info[image_id]
-        if info["source"] == "objects":
+        if info["source"] == "regions":
             return info["path"]
         else:
             super(self.__class__, self).image_reference(image_id)
@@ -187,13 +183,13 @@ class CustomDataset(utils.Dataset):
 def train(model):
     """Train the model."""
     # Training dataset.
-    dataset_train = CustomDataset()
-    dataset_train.load_custom(args.dataset, "train")
+    dataset_train = RegionsDataset()
+    dataset_train.load_regions(args.dataset, "train")
     dataset_train.prepare()
 
     # Validation dataset
-    dataset_val = CustomDataset()
-    dataset_val.load_custom(args.dataset, "val")
+    dataset_val = RegionsDataset()
+    dataset_val.load_regions(args.dataset, "val")
     dataset_val.prepare()
 
     # *** This training schedule is an example. Update to your needs ***
@@ -203,11 +199,8 @@ def train(model):
     print("Training network heads")
     model.train(dataset_train, dataset_val,
                 learning_rate=config.LEARNING_RATE,
-                epochs=2,
+                epochs=5,
                 layers='heads')
-    model_path = os.path.join(DEFAULT_LOGS_DIR, "mask_rcnn_shapes.h5")
-    #print('model path: ',model_path)
-    model.keras_model.save_weights(model_path)
 
 
 def color_splash(image, mask):
@@ -326,9 +319,9 @@ if __name__ == '__main__':
 
     # Configurations
     if args.command == "train":
-        config = CustomConfig()
+        config = RegionsConfig()
     else:
-        class InferenceConfig(CustomConfig):
+        class InferenceConfig(RegionsConfig):
             # Set batch size to 1 since we'll be running inference on
             # one image at a time. Batch size = GPU_COUNT * IMAGES_PER_GPU
             GPU_COUNT = 1
