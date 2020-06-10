@@ -203,7 +203,7 @@ def train(model):
     print("Training network heads")
     model.train(dataset_train, dataset_val,
                 learning_rate=config.LEARNING_RATE,
-                epochs=50,
+                epochs=2,
                 layers='heads')
     model_path = os.path.join(DEFAULT_LOGS_DIR, "mask_rcnn_shapes.h5")
     #print('model path: ',model_path)
