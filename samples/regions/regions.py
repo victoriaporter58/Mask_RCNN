@@ -76,7 +76,7 @@ class CustomConfig(Config):
     STEPS_PER_EPOCH = 100
 
     # Skip detections with < 90% confidence
-    DETECTION_MIN_CONFIDENCE = 0.9
+    DETECTION_MIN_CONFIDENCE = 0.95
 
 
 ############################################################
@@ -203,7 +203,7 @@ def train(model):
     print("Training network heads")
     model.train(dataset_train, dataset_val,
                 learning_rate=config.LEARNING_RATE,
-                epochs=50,
+                epochs=150,
                 layers='heads')
     model_path = os.path.join(DEFAULT_LOGS_DIR, "mask_rcnn_shapes.h5")
     #print('model path: ',model_path)
