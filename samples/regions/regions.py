@@ -197,7 +197,7 @@ def train(model):
     dataset_val.load_custom(args.dataset, "val")
     dataset_val.prepare()
 
-    augmentation = imgaug.augmenters.Fliplr(0.5)
+    augmentation = imgaug.augmenters.Affine(rotate=(-45, 45))
     print("Augmentation: ", augmentation)
 
     # *** This training schedule is an example. Update to your needs ***
