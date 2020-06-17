@@ -198,6 +198,7 @@ def train(model):
     dataset_val.prepare()
 
     augmentation = imgaug.augmenters.Fliplr(0.5)
+    print("Augmentation: ", augmentation)
 
     # *** This training schedule is an example. Update to your needs ***
     # Since we're using a very small dataset, and starting from
