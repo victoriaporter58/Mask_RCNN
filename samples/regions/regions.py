@@ -196,6 +196,8 @@ def train(model):
     dataset_val.load_custom(args.dataset, "val")
     dataset_val.prepare()
 
+    augmentation = imgaug.augmenters.Fliplr(0.5)
+
     # *** This training schedule is an example. Update to your needs ***
     # Since we're using a very small dataset, and starting from
     # COCO trained weights, we don't need to train too long. Also,
@@ -203,8 +205,9 @@ def train(model):
     print("Training network heads")
     model.train(dataset_train, dataset_val,
                 learning_rate=config.LEARNING_RATE,
-                epochs=150,
-                layers='heads')
+                epochs=2,
+                layers='heads',
+                augmentation = augmentation)
     model_path = os.path.join(DEFAULT_LOGS_DIR, "mask_rcnn_shapes.h5")
     #print('model path: ',model_path)
     model.keras_model.save_weights(model_path)
