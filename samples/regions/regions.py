@@ -208,9 +208,10 @@ def train(model):
     print("Training network heads")
     model.train(dataset_train, dataset_val,
                 learning_rate=config.LEARNING_RATE,
-                epochs=5,
+                epochs=150,
                 layers='heads',
                 augmentation = augmentation)
+
     model_path = os.path.join(DEFAULT_LOGS_DIR, "mask_rcnn_shapes.h5")
     #print('model path: ',model_path)
     model.keras_model.save_weights(model_path)
