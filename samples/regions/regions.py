@@ -197,7 +197,7 @@ def train(model):
     dataset_val.load_custom(args.dataset, "val")
     dataset_val.prepare()
 
-    augmentation = imgaug.augmenters.Sequential([imgaug.augmenters.Fliplr(0.5),imgaug.augmenters.Sometimes(imgaug.augmenters.Affine(5/6,scale=(0.8,1.0))),imgaug.augmenters.Sometimes(5/6,imgaug.augmenters.Affine(rotate=(-1, 1))),imgaug.augmenters.Sometimes(5/6,imgaug.augmenters.Affine(shear=(-1,1)))])
+    augmentation = imgaug.augmenters.Sequential([imgaug.augmenters.Fliplr(0.5),imgaug.augmenters.Sometimes(5/6,imgaug.augmenters.Affine(scale=(0.8,1.0))),imgaug.augmenters.Sometimes(imgaug.augmenters.Affine(5/6,rotate=(-1, 1))),imgaug.augmenters.Sometimes(5/6,imgaug.augmenters.Affine(shear=(-1,1)))])
 
     #print("Augmentation: ", augmentation)
 
