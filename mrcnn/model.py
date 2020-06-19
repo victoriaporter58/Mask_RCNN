@@ -30,6 +30,8 @@ from distutils.version import LooseVersion
 assert LooseVersion(tf.__version__) >= LooseVersion("1.3")
 assert LooseVersion(keras.__version__) >= LooseVersion('2.0.8')
 
+from keras.preprocessing.image import ImageDataGenerator
+
 
 ############################################################
 #  Utility Functions
@@ -2324,12 +2326,28 @@ class MaskRCNN():
             layers = layer_regex[layers]
 
         # Data generators
-        train_generator = data_generator(train_dataset, self.config, shuffle=True,
-                                         augmentation=augmentation,
-                                         batch_size=self.config.BATCH_SIZE,
-                                         no_augmentation_sources=no_augmentation_sources)
-        val_generator = data_generator(val_dataset, self.config, shuffle=True,
-                                       batch_size=self.config.BATCH_SIZE)
+	train_datagen = ImageDataGenerator(
+	        rotation_range=2,
+		shear_range=0.02,
+		zoom_range=0.02,
+		horizontal_flip=True,
+		fill_mode='nearest')
+	
+	val_datagen = ImageDataGenerator(horizontal_flip=True)
+	
+	train_generator = train_datagen.flow_from_directory(
+		'dataset/train',  # this is the target directory
+		target_size=(260, 360),
+		color_mode="rgb",
+		batch_size=batch_size,
+		class_mode='categorical')
+	
+	validation_generator = val_datagen.flow_from_directory(
+		'dataset/val',
+		target_size=(260, 360)
+		color_mode="rgb",
+		batch_size=batch_size,
+		class_mode='categorical')
 
         # Create log_dir if it does not exist
         if not os.path.exists(self.log_dir):
