@@ -197,7 +197,7 @@ def train(model):
     dataset_val.load_custom(args.dataset, "val")
     dataset_val.prepare()
 
-    #augmentation = imgaug.augmenters.Sometimes(5/6,imgaug.augmenters.OneOf([imgaug.augmenters.Fliplr(1),imgaug.augmenters.Affine(rotate=(-1, 1))]))
+    augmentation = imgaug.augmenters.Sequential(imgaug.augmenters.OneOf([imgaug.augmenters.Fliplr(1),imgaug.augmenters.Affine(rotate=(-1, 1))]))
 
     #print("Augmentation: ", augmentation)
 
@@ -208,7 +208,7 @@ def train(model):
     print("Training network heads")
     model.train(dataset_train, dataset_val,
                 learning_rate=config.LEARNING_RATE,
-                epochs=10,
+                epochs=100,
                 layers='heads',
                 augmentation = augmentation)
 
