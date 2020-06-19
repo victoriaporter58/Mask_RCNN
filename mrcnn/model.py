@@ -2326,28 +2326,13 @@ class MaskRCNN():
             layers = layer_regex[layers]
 
         # Data generators
-	train_datagen = ImageDataGenerator(
-	        rotation_range=2,
-		shear_range=0.02,
-		zoom_range=0.02,
-		horizontal_flip=True,
-		fill_mode='nearest')
+	train_datagen = ImageDataGenerator(rotation_range=2,shear_range=0.02,zoom_range=0.02,horizontal_flip=True,fill_mode='nearest')
 	
 	val_datagen = ImageDataGenerator(horizontal_flip=True)
 	
-	train_generator = train_datagen.flow_from_directory(
-		'dataset/train',  # this is the target directory
-		target_size=(260, 360),
-		color_mode="rgb",
-		batch_size=batch_size,
-		class_mode='categorical')
+	train_generator = train_datagen.flow_from_directory('dataset/train',target_size=(260, 360),color_mode="rgb",batch_size=batch_size,class_mode='categorical')
 	
-	validation_generator = val_datagen.flow_from_directory(
-		'dataset/val',
-		target_size=(260, 360)
-		color_mode="rgb",
-		batch_size=batch_size,
-		class_mode='categorical')
+	validation_generator = val_datagen.flow_from_directory('dataset/val',target_size=(260, 360),color_mode="rgb",batch_size=batch_size,class_mode='categorical')
 
         # Create log_dir if it does not exist
         if not os.path.exists(self.log_dir):
