@@ -68,13 +68,13 @@ class CustomConfig(Config):
 
     # We use a GPU with 12GB memory, which can fit two images.
     # Adjust down if you use a smaller GPU.
-    IMAGES_PER_GPU = 2
+    IMAGES_PER_GPU = 32 #2
 
     # Number of classes (including background)
     NUM_CLASSES = 1 + 6  # Background + balloon
 
     # Number of training steps per epoch
-    STEPS_PER_EPOCH = 100
+    STEPS_PER_EPOCH = 113 #100
 
     # Skip detections with < 90% confidence
     DETECTION_MIN_CONFIDENCE = 0.95
@@ -197,8 +197,14 @@ def train(model):
     dataset_val.load_custom(args.dataset, "val")
     dataset_val.prepare()
 
-    augmentation = imgaug.augmenters.OneOf([imgaug.augmenters.Fliplr(0.5),imgaug.augmenters.Affine(scale=(0.8,1.0)),imgaug.augmenters.Affine(rotate=(-1, 1)),imgaug.augmenters.Affine(shear=(-1,1))])
-
+    augmentation = imgaug.augmenters.Sometimes(9/10, imgaug.augmenters.OneOf([
+           imgaug.augmenters.Crop(px=(0, 10)),
+           imgaug.augmenters.Dropout([0.05, 0.15]),
+           imgaug.augmenters.Flipud(1),
+           imgaug.augmenters.Affine(shear=(-45,45)),
+           imgaug.augmenters.Affine(scale=(0.5,1.5)),
+           imgaug.augmenters.Affine(rotate=(-135, 135))
+    ]))
     #print("Augmentation: ", augmentation)
 
     # *** This training schedule is an example. Update to your needs ***
@@ -208,7 +214,7 @@ def train(model):
     print("Training network heads")
     model.train(dataset_train, dataset_val,
                 learning_rate=config.LEARNING_RATE,
-                epochs=100,
+                epochs=25,
                 layers='heads',
                 augmentation = augmentation)
 
