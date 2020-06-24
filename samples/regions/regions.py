@@ -203,7 +203,10 @@ def train(model):
            imgaug.augmenters.Flipud(1),
            imgaug.augmenters.Affine(shear=(-45,45)),
            imgaug.augmenters.Affine(scale=(0.5,1.5)),
-           imgaug.augmenters.Affine(rotate=(-135, 135))
+           imgaug.augmenters.Affine(rotate=(-135, 135)),
+           imgaug.augmenters.GaussianBlur(sigma=imgaug.paramaters.Uniform(0.0, 1.0)),
+           imgaug.augmenters.Multiply(imgaug.parameters.Positive(imgaug.parameters.Normal(0.0, 0.1)) + 1.0),#brightness
+           imgaug.augmenters.ContrastNormalization(imgaug.parameters.Choice([1.0, 1.5, 3.0],p=[0.8, 0.1, 0.1]))#contrast
     ]))
     #print("Augmentation: ", augmentation)
 
