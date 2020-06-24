@@ -224,7 +224,7 @@ def train(model):
            #imgaug.augmenters.Rain(),#creates rain-like effect over image
            imgaug.augmenters.Superpixels(p_replace=0.5, n_segments=64),#superpixels basically
            imgaug.augmenters.CropAndPad(percent=(-0.25, 0.25)),
-           imgaug.augmenters.Jigsaw(nb_rows=(1, 4), nb_cols=(1, 4))
+           #imgaug.augmenters.Jigsaw(nb_rows=(1, 4), nb_cols=(1, 4))
     ]))
     #print("Augmentation: ", augmentation)
 
