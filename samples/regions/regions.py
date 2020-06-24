@@ -231,12 +231,11 @@ def train(model):
     #save example augmented image every 100 batches
     folder_path = "C:/Users/victo/OneDrive/Desktop/Facial Weakness Project/Facial Weakness Detection/augmentedoutput"
     with tempfile.TemporaryDirectory() as folder_path:
-              seq = iaa.Sequential([
-                     iaa.Sequential([
-                            iaa.Fliplr(0.5),
-                            iaa.Crop(px=(0, 16))
+              seq = imgaug.augmenters.Sequential([
+                     imgaug.augmenters.Sequential([
+                            imgaug.augmenters.Dropout(p=(0, 0.2), per_channel=0.5)
                      ], random_order=True),
-                     iaa.SaveDebugImageEveryNBatches(folder_path, 100)
+                     imgaug.augmenters.SaveDebugImageEveryNBatches(folder_path, 100)
                ])
                      
                      
