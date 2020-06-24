@@ -221,7 +221,7 @@ def train(model):
            imgaug.augmenters.AverageBlur(k=((5, 11), (1, 3))),
            imgaug.augmenters.MotionBlur(k=15),
            imgaug.augmenters.Fog(),#creates a fog over the image - random intensity
-           imgaug.augmenters.Rain(),#creates rain-like effect over image
+           #imgaug.augmenters.Rain(),#creates rain-like effect over image
            imgaug.augmenters.Superpixels(p_replace=0.5, n_segments=64),#superpixels basically
            imgaug.augmenters.CropAndPad(percent=(-0.25, 0.25)),
            imgaug.augmenters.Jigsaw(nb_rows=(1, 4), nb_cols=(1, 4))
