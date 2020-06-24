@@ -215,7 +215,7 @@ def train(model):
            #ReplaceElementwise(iap.FromLowerResolution(iap.Binomial(0.1), size_px=8),iap.Normal(128, 0.4*128),per_channel=0.5),
            imgaug.augmenters.CoarseSaltAndPepper(0.05, size_percent=(0.01, 0.1), per_channel=True),#pixels size scaled and replaced with salt and pepper noise (rectangular shapes)
            imgaug.augmenters.Invert(0.25, per_channel=0.5),#invert pixels/channels
-           imgaug.augmenters.Solarize(0.5, threshold=(32, 128)),#invert colour of certain pixels
+           #imgaug.augmenters.Solarize(0.5, threshold=(32, 128)),#invert colour of certain pixels
            imgaug.augmenters.JpegCompression(compression=(70, 99)),#degrade quality of image
            #iaa.Identity(),#doesn't augment image
            imgaug.augmenters.AverageBlur(k=((5, 11), (1, 3))),
