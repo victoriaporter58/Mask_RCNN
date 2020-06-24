@@ -34,6 +34,7 @@ import datetime
 import numpy as np
 import skimage.draw
 import imgaug
+from imgaug import parameters as iap
 
 # Root directory of the project
 ROOT_DIR = os.path.abspath("../../")
@@ -204,9 +205,9 @@ def train(model):
            imgaug.augmenters.Affine(shear=(-45,45)),
            imgaug.augmenters.Affine(scale=(0.5,1.5)),
            imgaug.augmenters.Affine(rotate=(-135, 135)),
-           imgaug.augmenters.GaussianBlur(sigma=imgaug.paramaters.Uniform(0.0, 1.0)),
-           imgaug.augmenters.Multiply(imgaug.parameters.Positive(imgaug.parameters.Normal(0.0, 0.1)) + 1.0),#brightness
-           imgaug.augmenters.ContrastNormalization(imgaug.parameters.Choice([1.0, 1.5, 3.0],p=[0.8, 0.1, 0.1]))#contrast
+           imgaug.augmenters.GaussianBlur(sigma=iap.Uniform(0.0, 1.0)),
+           imgaug.augmenters.Multiply(iap.Positive(iap.Normal(0.0, 0.1)) + 1.0),#brightness
+           imgaug.augmenters.ContrastNormalization(iap.Choice([1.0, 1.5, 3.0],p=[0.8, 0.1, 0.1]))#contrast
     ]))
     #print("Augmentation: ", augmentation)
 
