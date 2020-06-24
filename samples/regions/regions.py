@@ -35,6 +35,7 @@ import numpy as np
 import skimage.draw
 import imgaug
 from imgaug import parameters as iap
+import tempfile
 
 # Root directory of the project
 ROOT_DIR = os.path.abspath("../../")
@@ -200,16 +201,46 @@ def train(model):
 
     augmentation = imgaug.augmenters.Sometimes(9/10, imgaug.augmenters.OneOf([
            imgaug.augmenters.Crop(px=(0, 10)),
-           imgaug.augmenters.Dropout([0.05, 0.15]),
+           imgaug.augmenters.Dropout(p=(0, 0.2), per_channel=0.5),#drop 5-20% of all pixels
            imgaug.augmenters.Flipud(1),
            imgaug.augmenters.Affine(shear=(-45,45)),
            imgaug.augmenters.Affine(scale=(0.5,1.5)),
            imgaug.augmenters.Affine(rotate=(-135, 135)),
            imgaug.augmenters.GaussianBlur(sigma=iap.Uniform(0.0, 1.0)),
-           imgaug.augmenters.Multiply(iap.Positive(iap.Normal(0.0, 0.1)) + 1.0),#brightness
-           imgaug.augmenters.ContrastNormalization(iap.Choice([1.0, 1.5, 3.0],p=[0.8, 0.1, 0.1]))#contrast
+           imgaug.AdditiveGaussianNoise(scale=0.2*255, per_channel=True),#noise created by greyscale & colour pixel replacements
+           imgaug.AdditiveLaplaceNoise(scale=0.2*255, per_channel=True),#like gaussian noise except more likely to use high/low values
+           imgaug.augmenters.Multiply((0.5, 1.5), per_channel=0.5),#brightness and colour channel adjustment
+           imgaug.augmenters.ContrastNormalization(iap.Choice([1.0, 1.5, 3.0],p=[0.6, 0.3, 0.1])),#contrast
+           imgaug.augmenters.ElasticTransformation(alpha=50, sigma=5),#water effect - alpha=intensity of transformation, sigma=smoothing
+           #ReplaceElementwise(iap.FromLowerResolution(iap.Binomial(0.1), size_px=8),iap.Normal(128, 0.4*128),per_channel=0.5),
+           imgaug.CoarseSaltAndPepper(0.05, size_percent=(0.01, 0.1), per_channel=True),#pixels size scaled and replaced with salt and pepper noise (rectangular shapes)
+           imgaug.Invert(0.25, per_channel=0.5),#invert pixels/channels
+           imgaug.Solarize(0.5, threshold=(32, 128)),#invert colour of certain pixels
+           imgaug.JpegCompression(compression=(70, 99)),#degrade quality of image
+           #iaa.Identity(),#doesn't augment image
+           imgaug.AverageBlur(k=((5, 11), (1, 3))),
+           imgaug.MotionBlur(k=15),
+           imgaug.Fog(),#creates a fog over the image - random intensity
+           imgaug.Rain(),#creates rain-like effect over image
+           imgaug.Superpixels(p_replace=0.5, n_segments=64),#superpixels basically
+           imgaug.CropAndPad(percent=(-0.25, 0.25)),
+           imgaug.Jigsaw(nb_rows=(1, 4), nb_cols=(1, 4))
     ]))
     #print("Augmentation: ", augmentation)
+
+    #save example augmented image every 100 batches
+    folder_path = "C:/Users/victo/OneDrive/Desktop/Facial Weakness Project/Facial Weakness Detection/augmentedoutput"
+    with tempfile.TemporaryDirectory() as folder_path:
+              seq = iaa.Sequential([
+                     iaa.Sequential([
+                            iaa.Fliplr(0.5),
+                            iaa.Crop(px=(0, 16))
+                     ], random_order=True),
+                     iaa.SaveDebugImageEveryNBatches(folder_path, 100)
+               ])
+                     
+                     
+
 
     # *** This training schedule is an example. Update to your needs ***
     # Since we're using a very small dataset, and starting from
