@@ -200,17 +200,17 @@ def train(model):
     dataset_val.prepare()
 
     augmentation = imgaug.augmenters.Sometimes(9/10, imgaug.augmenters.OneOf([
-           imgaug.augmenters.Crop(px=(0, 10)),
+           imgaug.augmenters.Crop(percent=(0, 0.1)),
            imgaug.augmenters.Dropout(p=(0, 0.2), per_channel=0.5),#drop 5-20% of all pixels
            imgaug.augmenters.Flipud(1),
-           imgaug.augmenters.Affine(shear=(-45,45)),
+           imgaug.augmenters.Affine(shear=(-8,8)),
            imgaug.augmenters.Affine(scale=(0.5,1.5)),
            imgaug.augmenters.Affine(rotate=(-135, 135)),
-           imgaug.augmenters.GaussianBlur(sigma=iap.Uniform(0.0, 0.5)),
-           #imgaug.augmenters.AdditiveGaussianNoise(scale=0.2*255, per_channel=True),#noise created by greyscale & colour pixel replacements
+           imgaug.augmenters.GaussianBlur(sigma=(0.0, 0.5)),
+           imgaug.augmenters.AdditiveGaussianNoise(scale=0.2*255, per_channel=True),#noise created by greyscale & colour pixel replacements
            #imgaug.augmenters.AdditiveLaplaceNoise(scale=0.2*255, per_channel=True),#like gaussian noise except more likely to use high/low values
            imgaug.augmenters.Multiply((0.5, 1.5), per_channel=0.5),#brightness and colour channel adjustment
-           imgaug.augmenters.ContrastNormalization(iap.Choice([1.0, 1.5, 3.0],p=[0.6, 0.3, 0.1])),#contrast
+           imgaug.augmenters.ContrastNormalization((0.75, 1.5)),#contrast
            #imgaug.augmenters.ElasticTransformation(alpha=50, sigma=5),#water effect - alpha=intensity of transformation, sigma=smoothing
            #ReplaceElementwise(iap.FromLowerResolution(iap.Binomial(0.1), size_px=8),iap.Normal(128, 0.4*128),per_channel=0.5),
            #imgaug.augmenters.CoarseSaltAndPepper(0.05, size_percent=(0.01, 0.1), per_channel=True),#pixels size scaled and replaced with salt and pepper noise (rectangular shapes)
@@ -218,14 +218,14 @@ def train(model):
            #imgaug.augmenters.Solarize(0.5, threshold=(32, 128)),#invert colour of certain pixels
            imgaug.augmenters.JpegCompression(compression=(70, 99)),#degrade quality of image
            #iaa.Identity(),#doesn't augment image
-           imgaug.augmenters.AverageBlur(k=((5, 11), (1, 3))),
-           imgaug.augmenters.MotionBlur(k=15),
-           imgaug.augmenters.Fog(),#creates a fog over the image - random intensity
+           #imgaug.augmenters.AverageBlur(k=((5, 11), (1, 3))),
+           imgaug.augmenters.MotionBlur(k=4),
+           #imgaug.augmenters.Fog(),#creates a fog over the image - random intensity
            #imgaug.augmenters.Rain(),#creates rain-like effect over image
            #imgaug.augmenters.Superpixels(p_replace=0.5, n_segments=64),#superpixels basically
            imgaug.augmenters.CropAndPad(percent=(-0.25, 0.25)),
            #imgaug.augmenters.Jigsaw(nb_rows=(1, 4), nb_cols=(1, 4))
-    ]))
+    ],random_order=True))
     #print("Augmentation: ", augmentation)
 
     #save example augmented image every 100 batches
