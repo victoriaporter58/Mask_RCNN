@@ -206,7 +206,7 @@ def train(model):
            imgaug.augmenters.Affine(shear=(-45,45)),
            imgaug.augmenters.Affine(scale=(0.5,1.5)),
            imgaug.augmenters.Affine(rotate=(-135, 135)),
-           imgaug.augmenters.GaussianBlur(sigma=iap.Uniform(0.0, 1.0)),
+           imgaug.augmenters.GaussianBlur(sigma=iap.Uniform(0.0, 0.5)),
            #imgaug.augmenters.AdditiveGaussianNoise(scale=0.2*255, per_channel=True),#noise created by greyscale & colour pixel replacements
            #imgaug.augmenters.AdditiveLaplaceNoise(scale=0.2*255, per_channel=True),#like gaussian noise except more likely to use high/low values
            imgaug.augmenters.Multiply((0.5, 1.5), per_channel=0.5),#brightness and colour channel adjustment
