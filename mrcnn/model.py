@@ -2185,7 +2185,8 @@ class MaskRCNN():
         # Compile
         self.keras_model.compile(
             optimizer=optimizer,
-            loss=[None] * len(self.keras_model.outputs))
+            loss=[None] * len(self.keras_model.outputs),
+	    metrics=['accuracy'])
 
         # Add metrics for losses
         for name in loss_names:
