@@ -217,7 +217,7 @@ def train(model):
            #imgaug.augmenters.Invert(0.25, per_channel=0.5),#invert pixels/channels
            #imgaug.augmenters.Solarize(0.5, threshold=(32, 128)),#invert colour of certain pixels
            #imgaug.augmenters.JpegCompression(compression=(70, 99)),#degrade quality of image
-           imgaug.augmenters.Identity(),#doesn't augment image
+           #imgaug.augmenters.Identity(),#doesn't augment image
            #imgaug.augmenters.AverageBlur(k=((5, 11), (1, 3))),
            #imgaug.augmenters.MotionBlur(k=4),
            #imgaug.augmenters.Fog(),#creates a fog over the image - random intensity
