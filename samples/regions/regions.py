@@ -202,7 +202,7 @@ def train(model):
     augmentation = imgaug.augmenters.Sometimes(9/10, imgaug.augmenters.OneOf([
            #imgaug.augmenters.ChangeColorTemperature((1100, 10000)),
            imgaug.augmenters.Grayscale(alpha=(0.0, 1.0)),
-           imgaug.augmenters.MultiplyBrightness((0.5, 1.5)),
+           #imgaug.augmenters.MultiplyBrightness((0.5, 1.5)),
            imgaug.augmenters.MultiplyHueAndSaturation((0.5, 1.5), per_channel=True),
            imgaug.augmenters.Affine(rotate=(-135, 135)),
            imgaug.augmenters.AdditiveGaussianNoise(scale=0.2*255, per_channel=True),#noise created by greyscale & colour pixel replacements
