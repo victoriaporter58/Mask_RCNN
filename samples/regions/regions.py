@@ -209,13 +209,13 @@ def train(model):
            imgaug.augmenters.AdditiveGaussianNoise(scale=0.2*255, per_channel=True),#noise created by greyscale & colour pixel replacements
            imgaug.augmenters.Multiply((0.5, 1.5), per_channel=0.5),#brightness and colour channel adjustment
            imgaug.augmenters.ContrastNormalization((0.75, 1.5)),#contrast
-           imgaug.augmenters.ScaleX((0.5, 1.5)),
-           imgaug.augmenters.ShearX((-20, 20)),
+           #imgaug.augmenters.ScaleX((0.5, 1.5)),
+           imgaug.augmenters.Affine(shear=(-16, 16)),
            imgaug.augmenters.AdditiveLaplaceNoise(scale=0.2*255, per_channel=True),#like gaussian noise except more likely to use high/low values
            imgaug.augmenters.Crop(percent=(0, 0.1)),
            imgaug.augmenters.Dropout(p=(0, 0.2), per_channel=0.5),#drop 5-20% of all pixels
            #imgaug.augmenters.Flipud(1),
-           imgaug.augmenters.ScaleY((0.5, 1.5)),
+           #imgaug.augmenters.ScaleY((0.5, 1.5)),
            imgaug.augmenters.GaussianBlur(sigma=(0.0, 0.5)),
            imgaug.augmenters.CropAndPad(percent=(-0.25, 0.25)),
            imgaug.augmenters.Affine(scale=(0.5,1.5))
