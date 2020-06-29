@@ -200,7 +200,7 @@ def train(model):
     dataset_val.prepare()
 
     augmentation = imgaug.augmenters.Sometimes(9/10, imgaug.augmenters.OneOf([
-           imgaug.augmenters.ChangeColorTemperature((1100, 10000)),
+           #imgaug.augmenters.ChangeColorTemperature((1100, 10000)),
            imgaug.augmenters.Grayscale(alpha=(0.0, 1.0)),
            imgaug.augmenters.MultiplyBrightness((0.5, 1.5)),
            imgaug.augmenters.MultiplyHueAndSaturation((0.5, 1.5), per_channel=True),
