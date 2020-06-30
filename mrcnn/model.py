@@ -2090,7 +2090,7 @@ class MaskRCNN():
             raise FileNotFoundError(
                 errno.ENOENT, "Could not find weight files in {}".format(dir_name))
         checkpoint = os.path.join(dir_name, checkpoints[-1])
-        return checkpoint
+        return '/content/gdrive/My Drive/Facial_Weakness_Project/Mask_RCNN/logs/regions20200630T0902'#checkpoint
 
     def load_weights(self, filepath, by_name=False, exclude=None):
         """Modified version of the corresponding Keras function with
