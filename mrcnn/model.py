@@ -2081,7 +2081,7 @@ class MaskRCNN():
                 "Could not find model directory under {}".format(self.model_dir))
         # Pick last directory
         dir_name = os.path.join(self.model_dir, dir_names[-1])
-        #  Find the last checkpoint
+        # Find the last checkpoint
         checkpoints = next(os.walk(dir_name))[2]
         checkpoints = filter(lambda f: f.startswith("mask_rcnn"), checkpoints)
         checkpoints = sorted(checkpoints)
@@ -2185,8 +2185,7 @@ class MaskRCNN():
         # Compile
         self.keras_model.compile(
             optimizer=optimizer,
-            loss=[None] * len(self.keras_model.outputs)
-	    )
+            loss=[None] * len(self.keras_model.outputs))
 
         # Add metrics for losses
         for name in loss_names:
