@@ -200,43 +200,21 @@ def train(model):
     dataset_val.prepare()
 
     augmentation = imgaug.augmenters.Sometimes(9/10, imgaug.augmenters.OneOf([
-           #imgaug.augmenters.ChangeColorTemperature((1100, 10000)),
            imgaug.augmenters.Grayscale(alpha=(0.0, 1.0)),
-           #imgaug.augmenters.MultiplyBrightness((0.5, 1.5)),
-           #imgaug.augmenters.MultiplyHueAndSaturation((0.5, 1.5), per_channel=True),
            imgaug.augmenters.AddToHueAndSaturation((-50, 50), per_channel=True),
            imgaug.augmenters.Affine(rotate=(-135, 135)),
            imgaug.augmenters.AdditiveGaussianNoise(scale=0.2*255, per_channel=True),#noise created by greyscale & colour pixel replacements
            imgaug.augmenters.Multiply((0.5, 1.5), per_channel=0.5),#brightness and colour channel adjustment
            imgaug.augmenters.ContrastNormalization((0.75, 1.5)),#contrast
-           #imgaug.augmenters.ScaleX((0.5, 1.5)),
            imgaug.augmenters.Affine(shear=(-16, 16)),
            imgaug.augmenters.AdditiveLaplaceNoise(scale=0.2*255, per_channel=True),#like gaussian noise except more likely to use high/low values
            imgaug.augmenters.Crop(percent=(0, 0.1)),
            imgaug.augmenters.Dropout(p=(0, 0.2), per_channel=0.5),#drop 5-20% of all pixels
-           #imgaug.augmenters.Flipud(1),
-           #imgaug.augmenters.ScaleY((0.5, 1.5)),
            imgaug.augmenters.GaussianBlur(sigma=(0.0, 0.5)),
            imgaug.augmenters.CropAndPad(percent=(-0.25, 0.25)),
            imgaug.augmenters.Affine(scale=(0.5,1.5))
-           
-           
-           #imgaug.augmenters.ElasticTransformation(alpha=50, sigma=5),#water effect - alpha=intensity of transformation, sigma=smoothing
-           #ReplaceElementwise(iap.FromLowerResolution(iap.Binomial(0.1), size_px=8),iap.Normal(128, 0.4*128),per_channel=0.5),
-           #imgaug.augmenters.CoarseSaltAndPepper(0.05, size_percent=(0.01, 0.1), per_channel=True),#pixels size scaled and replaced with salt and pepper noise (rectangular shapes)
-           #imgaug.augmenters.Invert(0.25, per_channel=0.5),#invert pixels/channels
-           #imgaug.augmenters.Solarize(0.5, threshold=(32, 128)),#invert colour of certain pixels
-           #imgaug.augmenters.JpegCompression(compression=(70, 99)),#degrade quality of image
-           #imgaug.augmenters.Identity(),#doesn't augment image
-           #imgaug.augmenters.AverageBlur(k=((5, 11), (1, 3))),
-           #imgaug.augmenters.MotionBlur(k=4),
-           #imgaug.augmenters.Fog(),#creates a fog over the image - random intensity
-           #imgaug.augmenters.Rain(),#creates rain-like effect over image
-           #imgaug.augmenters.Superpixels(p_replace=0.5, n_segments=64),#superpixels basically
-           
-           #imgaug.augmenters.Jigsaw(nb_rows=(1, 4), nb_cols=(1, 4))
     ]))
-    #print("Augmentation: ", augmentation)
+
 
     #save example augmented image every 100 batches
     #folder_path = "C:/Users/victo/OneDrive/Desktop/Facial Weakness Project/Facial Weakness Detection/augmentedoutput"
@@ -262,8 +240,7 @@ def train(model):
                 layers='heads',
                 augmentation = augmentation)
 
-    model_path = os.path.join(DEFAULT_LOGS_DIR, "mask_rcnn_shapes.h5")
-    #print('model path: ',model_path)
+    model_path = os.path.join(DEFAULT_LOGS_DIR, "mask_rcnn_reg.h5")
     model.keras_model.save_weights(model_path)
 
 
