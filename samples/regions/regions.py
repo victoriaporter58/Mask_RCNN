@@ -200,6 +200,7 @@ def train(model):
     dataset_val.prepare()
 
     augmentation = imgaug.augmenters.Sometimes(9/10, imgaug.augmenters.OneOf([
+           imgaug.augmenters.Flipud(1.0),
            imgaug.augmenters.Grayscale(alpha=(0.0, 1.0)),
            imgaug.augmenters.AddToHueAndSaturation((-50, 50), per_channel=True),
            imgaug.augmenters.Affine(rotate=(-135, 135)),
