@@ -36,6 +36,7 @@ import skimage.draw
 import imgaug
 from imgaug import parameters as iap
 import tempfile
+import keras
 
 # Root directory of the project
 ROOT_DIR = os.path.abspath("../../")
@@ -44,6 +45,7 @@ ROOT_DIR = os.path.abspath("../../")
 sys.path.append(ROOT_DIR)  # To find local version of the library
 from mrcnn.config import Config
 from mrcnn import model as modellib, utils
+from keras.callbacks import ModelCheckpoint
 
 # Path to trained weights file
 COCO_WEIGHTS_PATH = os.path.join(ROOT_DIR, "mask_rcnn_coco.h5")
@@ -234,12 +236,15 @@ def train(model):
     # Since we're using a very small dataset, and starting from
     # COCO trained weights, we don't need to train too long. Also,
     # no need to train all layers, just the heads should do it.
+    checkpoint = ModelCheckpoint("best_model.h5", monitor='loss', verbose=1, save_best_only=True, mode='auto', period=1)
+
     print("Training network heads")
     model.train(dataset_train, dataset_val,
                 learning_rate=config.LEARNING_RATE,
                 epochs=10,
                 layers='heads',
-                augmentation = augmentation)
+                augmentation = augmentation,
+                callbacks=[checkpoint])
 
     model_path = os.path.join(DEFAULT_LOGS_DIR, "mask_rcnn_reg.h5")
     model.keras_model.save_weights(model_path)
