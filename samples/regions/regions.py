@@ -243,11 +243,11 @@ def train(model):
                 learning_rate=config.LEARNING_RATE,
                 epochs=10,
                 layers='heads',
-                augmentation = augmentation,
-                callbacks=[checkpoint])
+                augmentation = augmentation)
+                
 
-    model_path = os.path.join(DEFAULT_LOGS_DIR, "mask_rcnn_reg.h5")
-    model.keras_model.save_weights(model_path)
+    #model_path = os.path.join(DEFAULT_LOGS_DIR, "mask_rcnn_reg.h5")
+    #model.keras_model.save_weights(model_path)
 
 
 def color_splash(image, mask):
