@@ -236,7 +236,7 @@ def train(model):
     # Since we're using a very small dataset, and starting from
     # COCO trained weights, we don't need to train too long. Also,
     # no need to train all layers, just the heads should do it.
-    checkpoint = ModelCheckpoint("best_model.h5", monitor='loss', verbose=1, save_best_only=True, mode='auto', period=1)
+    checkpoint = ModelCheckpoint("best_model.h5", monitor='loss', verbose=1, save_best_only=True, mode='auto', period=2)
 
     print("Training network heads")
     model.train(dataset_train, dataset_val,
