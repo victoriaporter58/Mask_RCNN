@@ -124,7 +124,7 @@ class CustomDataset(utils.Dataset):
         # We mostly care about the x and y coordinates of each region
         # Note: In VIA 2.0, regions was changed from a dict to a list.
         annotations = json.load(open(os.path.join(dataset_dir, "via_region_data.json")))
-        annotations = list(annotations.values())  # don't need the dict keys
+        annotations = list(annotations).values())  # don't need the dict keys
 
         # The VIA tool saves images in the JSON even if they don't have any
         # annotations. Skip unannotated images.
@@ -135,8 +135,8 @@ class CustomDataset(utils.Dataset):
             # Get the x, y coordinaets of points of the polygons that make up
             # the outline of each object instance. There are stores in the
             # shape_attributes (see json format above)
-            polygons = [r['shape_attributes'] for r in a['regions'].values()]
-            objects = [s['region_attributes'] for s in a['regions'].values()]
+            polygons = [r['shape_attributes'] for r in a['regions']]#.values()]
+            objects = [s['region_attributes'] for s in a['regions']]#.values()]
             class_ids = [int(n['class']) for n in objects]
             # load_mask() needs the image size to convert polygons to masks.
             # Unfortunately, VIA doesn't include it in JSON, so we must read
@@ -242,7 +242,7 @@ def train(model):
     print("Training network heads")
     model.train(dataset_train, dataset_val,
                 learning_rate=config.LEARNING_RATE,
-                epochs=120,
+                epochs=2,
                 layers='heads',
                 augmentation = augmentation)
                 
