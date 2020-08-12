@@ -201,17 +201,17 @@ def train(model):
     dataset_val.load_custom(args.dataset, "val")
     dataset_val.prepare()
 
-    augmentation = imgaug.augmenters.Sometimes(9/10, imgaug.augmenters.OneOf([
-           imgaug.augmenters.Flipud(1.0),
-           imgaug.augmenters.Affine(rotate=(-135, 135)),
-           imgaug.augmenters.Affine(translate_px=(-50, 50)),
-           imgaug.augmenters.Affine(scale=(0.5,1.5)),
-           imgaug.augmenters.Affine(shear=(-16, 16)),
-           imgaug.augmenters.Multiply((0.5, 1.5), per_channel=0.5),#brightness and colour channel adjustment
-           imgaug.augmenters.Grayscale(alpha=(0.0, 1.0)),
-           imgaug.augmenters.ContrastNormalization((0.75, 1.5)),#contrast
-           imgaug.augmenters.GaussianBlur(sigma=(0.0, 0.5))
-    ]))
+   # augmentation = imgaug.augmenters.Sometimes(9/10, imgaug.augmenters.OneOf([
+    #       imgaug.augmenters.Flipud(1.0),
+     #      imgaug.augmenters.Affine(rotate=(-135, 135)),
+      #     imgaug.augmenters.Affine(translate_px=(-50, 50)),
+       #    imgaug.augmenters.Affine(scale=(0.5,1.5)),
+        #   imgaug.augmenters.Affine(shear=(-16, 16)),
+         #  imgaug.augmenters.Multiply((0.5, 1.5), per_channel=0.5),#brightness and colour channel adjustment
+          # imgaug.augmenters.Grayscale(alpha=(0.0, 1.0)),
+           #imgaug.augmenters.ContrastNormalization((0.75, 1.5)),#contrast
+           #imgaug.augmenters.GaussianBlur(sigma=(0.0, 0.5))
+   # ]))
 
 
     #save example augmented image every 100 batches
@@ -237,8 +237,8 @@ def train(model):
     model.train(dataset_train, dataset_val,
                 learning_rate=config.LEARNING_RATE,
                 epochs=150,
-                layers='heads',
-                augmentation = augmentation)
+                layers='heads')#,
+                #augmentation = augmentation)
                 
 
     #model_path = os.path.join(DEFAULT_LOGS_DIR, "mask_rcnn_reg.h5")
