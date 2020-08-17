@@ -226,7 +226,7 @@ def train(model):
     model.train(dataset_train, dataset_val,
                 learning_rate=config.LEARNING_RATE,
                 epochs=150,
-                layers='heads'),
+                layers='heads',
                 augmentation = augmentation)
                 
 
