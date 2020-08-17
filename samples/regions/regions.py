@@ -201,31 +201,20 @@ def train(model):
     dataset_val.load_custom(args.dataset, "val")
     dataset_val.prepare()
 
-   # augmentation = imgaug.augmenters.Sometimes(9/10, imgaug.augmenters.OneOf([
-    #       imgaug.augmenters.Flipud(1.0),
-     #      imgaug.augmenters.Affine(rotate=(-135, 135)),
-      #     imgaug.augmenters.Affine(translate_px=(-50, 50)),
-       #    imgaug.augmenters.Affine(scale=(0.5,1.5)),
-        #   imgaug.augmenters.Affine(shear=(-16, 16)),
-         #  imgaug.augmenters.Multiply((0.5, 1.5), per_channel=0.5),#brightness and colour channel adjustment
-          # imgaug.augmenters.Grayscale(alpha=(0.0, 1.0)),
-           #imgaug.augmenters.ContrastNormalization((0.75, 1.5)),#contrast
-           #imgaug.augmenters.GaussianBlur(sigma=(0.0, 0.5))
-   # ]))
-
-
-    #save example augmented image every 100 batches
-    #folder_path = "C:/Users/victo/OneDrive/Desktop/Facial Weakness Project/Facial Weakness Detection/augmentedoutput"
-    #with tempfile.TemporaryDirectory() as folder_path:
-    #          seq = imgaug.augmenters.Sequential([
-    #                 imgaug.augmenters.Sequential([
-    #                        imgaug.augmenters.Dropout(p=(0, 0.2), per_channel=0.5)
-    #                 ], random_order=True),
-    #                 imgaug.augmenters.SaveDebugImageEveryNBatches(folder_path, 100)
-    #           ])
-                     
-                     
-
+    augmentation = imgaug.augmenters.Sometimes(145/150, imgaug.augmenters.OneOf([
+           imgaug.augmenters.Affine(rotate=(-135, 135)),
+           imgaug.augmenters.Grayscale(alpha=(1.0)),
+           imgaug.augmenters.GaussianBlur(sigma=(1.5, 3.0)),
+           imgaug.augmenters.Multiply((0.1, 0.5)), #dim
+           imgaug.augmenters.Multiply((1.5, 2.0)), #brighten
+           imgaug.augmenters.Flipud(1.0),           
+           imgaug.augmenters.Affine(translate_px=(-50, 50)),
+           imgaug.augmenters.MotionBlur(k=5, angle=[-45, 45]),
+           imgaug.augmenters.Affine(scale=(0.5,1.5)),
+           imgaug.augmenters.Affine(shear=(-25, 25)),        
+           imgaug.augmenters.GammaContrast((0.5, 2.0))
+           
+    ]))
 
     # *** This training schedule is an example. Update to your needs ***
     # Since we're using a very small dataset, and starting from
@@ -237,12 +226,12 @@ def train(model):
     model.train(dataset_train, dataset_val,
                 learning_rate=config.LEARNING_RATE,
                 epochs=150,
-                layers='heads')#,
-                #augmentation = augmentation)
+                layers='heads'),
+                augmentation = augmentation)
                 
 
-    #model_path = os.path.join(DEFAULT_LOGS_DIR, "mask_rcnn_reg.h5")
-    #model.keras_model.save_weights(model_path)
+    model_path = os.path.join(DEFAULT_LOGS_DIR, "mask_rcnn_reg.h5")
+    model.keras_model.save_weights(model_path)
 
 
 def color_splash(image, mask):
