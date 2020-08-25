@@ -203,7 +203,7 @@ def train(model):
 
     augmentation = imgaug.augmenters.Sequential([
            imgaug.augmenters.Grayscale(alpha=(1.0)),
-           imgaug.augmenters.Affine(translate_px=(-40, 40)),
+           imgaug.augmenters.Affine(translate_px=(-20, 20)),
            imgaug.augmenters.Sometimes(99/100, imgaug.augmenters.OneOf([
                   imgaug.augmenters.Affine(rotate=(-135, 135)),
                   imgaug.augmenters.GaussianBlur(sigma=(1.5, 3.0)),
@@ -213,7 +213,8 @@ def train(model):
                   imgaug.augmenters.MotionBlur(k=5, angle=[-45, 45]),
                   imgaug.augmenters.Affine(scale=(0.5,1.5)),
                   imgaug.augmenters.Affine(shear=(-25, 25)),        
-                  imgaug.augmenters.GammaContrast((0.5, 2.0))
+                  imgaug.augmenters.GammaContrast((0.5, 2.0)),
+                  imgaug.augmenters.Affine(translate_px=(-30, 30))
            ]))])
      
 
