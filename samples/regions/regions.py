@@ -201,7 +201,7 @@ def train(model):
     dataset_val.load_custom(args.dataset, "val")
     dataset_val.prepare()
 
-    augmentation = imgaug.augmenters.Sequential(
+    augmentation = imgaug.augmenters.Sequential([
            imgaug.augmenters.Grayscale(alpha=(1.0)),
            imgaug.augmenters.Affine(translate_px=(-50, 50)),
            imgaug.augmenters.Sometimes(99/100, imgaug.augmenters.OneOf([
@@ -214,7 +214,7 @@ def train(model):
                   imgaug.augmenters.Affine(scale=(0.5,1.5)),
                   imgaug.augmenters.Affine(shear=(-25, 25)),        
                   imgaug.augmenters.GammaContrast((0.5, 2.0))
-           ])))
+           ]))])
      
 
     # *** This training schedule is an example. Update to your needs ***
