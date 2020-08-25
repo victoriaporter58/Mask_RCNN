@@ -203,7 +203,7 @@ def train(model):
 
     augmentation = imgaug.augmenters.Sequential([
            imgaug.augmenters.Grayscale(alpha=(1.0)),
-           imgaug.augmenters.Affine(translate_px=(-50, 50)),
+           imgaug.augmenters.Affine(translate_px=(-40, 40)),
            imgaug.augmenters.Sometimes(99/100, imgaug.augmenters.OneOf([
                   imgaug.augmenters.Affine(rotate=(-135, 135)),
                   imgaug.augmenters.GaussianBlur(sigma=(1.5, 3.0)),
