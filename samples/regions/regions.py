@@ -201,20 +201,21 @@ def train(model):
     dataset_val.load_custom(args.dataset, "val")
     dataset_val.prepare()
 
-    augmentation = imgaug.augmenters.Sometimes(145/150, imgaug.augmenters.OneOf([
-           imgaug.augmenters.Affine(rotate=(-135, 135)),
+    augmentation = imgaug.augmenters.Sequential(
            imgaug.augmenters.Grayscale(alpha=(1.0)),
-           imgaug.augmenters.GaussianBlur(sigma=(1.5, 3.0)),
-           imgaug.augmenters.Multiply((0.1, 0.5)), #dim
-           imgaug.augmenters.Multiply((1.5, 2.0)), #brighten
-           imgaug.augmenters.Flipud(1.0),           
            imgaug.augmenters.Affine(translate_px=(-50, 50)),
-           imgaug.augmenters.MotionBlur(k=5, angle=[-45, 45]),
-           imgaug.augmenters.Affine(scale=(0.5,1.5)),
-           imgaug.augmenters.Affine(shear=(-25, 25)),        
-           imgaug.augmenters.GammaContrast((0.5, 2.0))
-           
-    ]))
+           imgaug.augmenters.Sometimes(99/100, imgaug.augmenters.OneOf([
+                  imgaug.augmenters.Affine(rotate=(-135, 135)),
+                  imgaug.augmenters.GaussianBlur(sigma=(1.5, 3.0)),
+                  imgaug.augmenters.Multiply((0.1, 0.4)), #dim
+                  imgaug.augmenters.Multiply((1.7, 2.0)), #brighten
+                  imgaug.augmenters.Flipud(1.0),           
+                  imgaug.augmenters.MotionBlur(k=5, angle=[-45, 45]),
+                  imgaug.augmenters.Affine(scale=(0.5,1.5)),
+                  imgaug.augmenters.Affine(shear=(-25, 25)),        
+                  imgaug.augmenters.GammaContrast((0.5, 2.0))
+           ])))
+     
 
     # *** This training schedule is an example. Update to your needs ***
     # Since we're using a very small dataset, and starting from
