@@ -202,19 +202,37 @@ def train(model):
     dataset_val.prepare()
 
     augmentation = imgaug.augmenters.Sequential([
+           
            imgaug.augmenters.Grayscale(alpha=(1.0)),
-           imgaug.augmenters.Affine(translate_px=(-20, 20)),
-           imgaug.augmenters.Sometimes(99/100, imgaug.augmenters.OneOf([
-                  imgaug.augmenters.Affine(rotate=(-135, 135)),
-                  imgaug.augmenters.GaussianBlur(sigma=(1.5, 3.0)),
-                  imgaug.augmenters.Multiply((0.1, 0.4)), #dim
-                  imgaug.augmenters.Multiply((1.7, 2.0)), #brighten
-                  imgaug.augmenters.Flipud(1.0),           
-                  imgaug.augmenters.MotionBlur(k=5, angle=[-45, 45]),
-                  imgaug.augmenters.Affine(scale=(0.5,1.5)),
-                  imgaug.augmenters.Affine(shear=(-25, 25)),        
-                  imgaug.augmenters.GammaContrast((0.5, 2.0)),
-                  imgaug.augmenters.Affine(translate_px=(-30, 30))
+           
+           imgaug.augmenters.OneOf([
+                  imgaug.augmenters.Affine(translate_px={"x": (-40, -10), "y": (-90, -20)}),
+                  imgaug.augmenters.Affine(translate_px={"x": (10, 50), "y": (-90, -20)}),
+                  imgaug.augmenters.Affine(translate_px={"x": (-50, -10), "y": (20, 90)}),
+                  imgaug.augmenters.Affine(translate_px={"x": (10, 50), "y": (90, 20)})
+                     
+           ]),
+           
+           imgaug.augmenters.Sometimes(96/100, imgaug.augmenters.OneOf([
+                  imgaug.augmenters.MotionBlur(k=5, angle=-45),
+                  imgaug.augmenters.MotionBlur(k=5, angle=45),
+                  imgaug.augmenters.GaussianBlur(sigma=1.0),
+                  imgaug.augmenters.GaussianBlur(sigma=1.5),
+                  imgaug.augmenters.GaussianBlur(sigma=2.0),
+                  imgaug.augmenters.GaussianBlur(sigma=2.5),
+                  imgaug.augmenters.Affine(rotate=(-135, -45)),
+                  imgaug.augmenters.Affine(rotate=(45, 135)),              
+                  imgaug.augmenters.Multiply((0.1, 0.5)), #dim
+                  imgaug.augmenters.Multiply((1.5, 2.0)), #brighten                  
+                  imgaug.augmenters.BlendAlpha((0.0, 1.0), foreground=imgaug.augmenters.Add(100), background=imgaug.augmenters.Multiply(0.2)),
+                  imgaug.augmenters.BlendAlphaHorizontalLinearGradient(imgaug.augmenters.TotalDropout(1.0),min_value=0.2, max_value=0.8),
+                  imgaug.augmenters.GammaContrast((0.5)),
+                  imgaug.augmenters.GammaContrast((2.0)),
+                  imgaug.augmenters.PiecewiseAffine(scale=(0.01, 0.05)),
+                  imgaug.augmenters.PerspectiveTransform(scale=(0.01, 0.15)),
+                  imgaug.augmenters.Affine(scale=(0.5)),
+                  imgaug.augmenters.Affine(scale=(1.5)),
+                  imgaug.augmenters.Affine(shear=(-25, 25))
            ]))])
      
 
