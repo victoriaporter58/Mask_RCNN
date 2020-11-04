@@ -206,33 +206,44 @@ def train(model):
            imgaug.augmenters.Grayscale(alpha=(1.0)),
            
            imgaug.augmenters.OneOf([
-                  imgaug.augmenters.Affine(translate_px={"x": (-40, -10), "y": (-90, -20)}),
-                  imgaug.augmenters.Affine(translate_px={"x": (10, 50), "y": (-90, -20)}),
-                  imgaug.augmenters.Affine(translate_px={"x": (-50, -10), "y": (20, 90)}),
-                  imgaug.augmenters.Affine(translate_px={"x": (10, 50), "y": (90, 20)})
-                     
+                  imgaug.augmenters.Affine(translate_px={"x": (-50, -5), "y": (-75, -15)}),
+                  imgaug.augmenters.Affine(translate_px={"x": (5, 50), "y": (-75, -15)}),
+                  imgaug.augmenters.Affine(translate_px={"x": (-50, -5), "y": (15, 75)}),
+                  imgaug.augmenters.Affine(translate_px={"x": (5, 50), "y": (15, 75)})
            ]),
            
-           imgaug.augmenters.Sometimes(96/100, imgaug.augmenters.OneOf([
-                  imgaug.augmenters.MotionBlur(k=5, angle=-45),
-                  imgaug.augmenters.MotionBlur(k=5, angle=45),
+           imgaug.augmenters.Sometimes(98/100, imgaug.augmenters.OneOf([
+                  imgaug.augmenters.Multiply(0.25), #dim
+                  imgaug.augmenters.Multiply(0.5), #dim
+                  imgaug.augmenters.Add(-45) #dim
+                  imgaug.augmenters.Add(-25) #dim
+                  imgaug.augmenters.Multiply(1.5), #brighten
+                  imgaug.augmenters.Multiply(1.75), #brighten
+                  imgaug.augmenters.Add(25) #brighten
+                  imgaug.augmenters.Add(45) #brighten
+                  imgaug.augmenters.MotionBlur(k=5, angle=(45, 360)),
+                  imgaug.augmenters.MotionBlur(k=5, angle=(-360, -45)),
                   imgaug.augmenters.GaussianBlur(sigma=1.0),
-                  imgaug.augmenters.GaussianBlur(sigma=1.5),
                   imgaug.augmenters.GaussianBlur(sigma=2.0),
-                  imgaug.augmenters.GaussianBlur(sigma=2.5),
+                  imgaug.augmenters.GaussianBlur(sigma=3.0),
+                  imgaug.augmenters.LinearContrast(0.4),
+                  imgaug.augmenters.LinearContrast(1.5),
+                  imgaug.augmenters.PerspectiveTransform(scale=0.075),
+                  imgaug.augmenters.PerspectiveTransform(scale=0.1),
+                  imgaug.augmenters.PerspectiveTransform(scale=0.125),
+                  imgaug.augmenters.PiecewiseAffine(scale=(0.01, 0.05)),
+                  imgaug.augmenters.pillike.EnhanceSharpness(factor=0.1),
+                  imgaug.augmenters.pillike.EnhanceSharpness(factor=2.5),
                   imgaug.augmenters.Affine(rotate=(-135, -45)),
                   imgaug.augmenters.Affine(rotate=(45, 135)),              
-                  imgaug.augmenters.Multiply((0.1, 0.5)), #dim
-                  imgaug.augmenters.Multiply((1.5, 2.0)), #brighten                  
-                  imgaug.augmenters.BlendAlpha((0.0, 1.0), foreground=imgaug.augmenters.Add(100), background=imgaug.augmenters.Multiply(0.2)),
-                  imgaug.augmenters.BlendAlphaHorizontalLinearGradient(imgaug.augmenters.TotalDropout(1.0),min_value=0.2, max_value=0.8),
                   imgaug.augmenters.GammaContrast((0.5)),
-                  imgaug.augmenters.GammaContrast((2.0)),
-                  imgaug.augmenters.PiecewiseAffine(scale=(0.01, 0.05)),
-                  imgaug.augmenters.PerspectiveTransform(scale=(0.01, 0.15)),
+                  imgaug.augmenters.GammaContrast((1.6)),
                   imgaug.augmenters.Affine(scale=(0.5)),
                   imgaug.augmenters.Affine(scale=(1.5)),
-                  imgaug.augmenters.Affine(shear=(-25, 25))
+                  imgaug.augmenters.ShearX((-20, -10)),
+                  imgaug.augmenters.ShearX((10, 20)),       
+                  imgaug.augmenters.BlendAlpha((0.0, 1.0), foreground=imgaug.augmenters.Add(100), background=imgaug.augmenters.Multiply(0.2)),
+                  imgaug.augmenters.BlendAlphaHorizontalLinearGradient(imgaug.augmenters.TotalDropout(1.0),min_value=0.2, max_value=0.8)
            ]))])
      
 
