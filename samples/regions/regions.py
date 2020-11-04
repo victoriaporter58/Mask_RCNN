@@ -215,12 +215,10 @@ def train(model):
            imgaug.augmenters.Sometimes(98/100, imgaug.augmenters.OneOf([
                   imgaug.augmenters.Multiply(0.25), #dim
                   imgaug.augmenters.Multiply(0.5), #dim
-                  imgaug.augmenters.Add(-45) #dim
-                  imgaug.augmenters.Add(-25) #dim
+                  imgaug.augmenters.Add((-45,-25)) #dim
                   imgaug.augmenters.Multiply(1.5), #brighten
                   imgaug.augmenters.Multiply(1.75), #brighten
-                  imgaug.augmenters.Add(25) #brighten
-                  imgaug.augmenters.Add(45) #brighten
+                  imgaug.augmenters.Add((25,45)) #brighten
                   imgaug.augmenters.MotionBlur(k=5, angle=(45, 360)),
                   imgaug.augmenters.MotionBlur(k=5, angle=(-360, -45)),
                   imgaug.augmenters.GaussianBlur(sigma=1.0),
